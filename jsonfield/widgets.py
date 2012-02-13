@@ -9,5 +9,8 @@ class JSONWidget(forms.Textarea):
     def render(self, name, value, attrs=None):
         if value is None:
             value = ""
-        value = json.dumps(value, indent=2)
+        if not isinstance(value, basestring):
+            # If the value is already in JSON format, we need to dump it into
+            # a string. Don't do it if the value is already a string though! 
+            value = json.dumps(value, indent=2)
         return super(JSONWidget, self).render(name, value, attrs)
